@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from hartrix_base_cli import __main__ as hartrix
 import os,sys,asyncio
 if __name__=="__main__":
