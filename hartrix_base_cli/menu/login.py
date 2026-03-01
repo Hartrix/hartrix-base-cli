@@ -1,11 +1,13 @@
-from . import clear,config,selectNum
-from . import matrix
+from .. import clear,config,selectNum
+from .. import matrix
 from getpass import getpass
 import platform
 
 async def userList():
     """输出用户列表"""
     await clear()
+    print("用户列表\n====================\n")
+
     userNum=len(config.users)
 
     for i in range(userNum):
@@ -15,6 +17,8 @@ async def userList():
     choice=selectNum(1,userNum+1)
     if choice==userNum+1:
         await loginNew()
+    else:
+        await login(config.users[i-1])
 
 async def loginNew():
     """登录新用户"""
@@ -47,3 +51,8 @@ async def loginNew():
             accessToken=resp.access_token
         ))
         await config.writeUser()
+    else:
+        print("登录错误: ",resp)
+
+async def login(user:config.User):
+    await matrix.users.loginToken(homeserver=user.homeserver, userId=user.userId, accessToken=user.accessToken,deviceId=user.deviceId)
