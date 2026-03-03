@@ -22,6 +22,7 @@ class User:
        self.accessToken=accessToken
 
 users:List[User]=[]
+correntUser=-1
 
 async def setupUser():
     """(users.json) 读取用户信息，若没有则创建"""

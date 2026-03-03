@@ -1,5 +1,6 @@
 from .. import clear,config,selectNum
-from .. import matrix
+from .. import matrix,menu
+
 from getpass import getpass
 import platform
 
@@ -17,8 +18,11 @@ async def userList():
     choice=selectNum(1,userNum+1)
     if choice==userNum+1:
         await loginNew()
+        config.correntUser=userNum
     else:
         await login(config.users[i-1])
+        config.correntUser=i-1
+    await menu.features.mainMenu()
 
 async def loginNew():
     """登录新用户"""
