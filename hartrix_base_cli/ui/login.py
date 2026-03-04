@@ -1,5 +1,5 @@
 from .. import clear,config,selectNum
-from .. import matrix,menu
+from .. import matrix,ui
 
 from getpass import getpass
 import platform
@@ -22,7 +22,7 @@ async def userList():
     else:
         await login(config.users[i-1])
         config.correntUser=i-1
-    await menu.features.mainMenu()
+    await ui.features.mainMenu()
 
 async def loginNew():
     """登录新用户"""
