@@ -1,28 +1,40 @@
 from .. import clear,config,selectNum
-from .. import matrix,ui
+from .. import matrix
+
+from . import features
 
 from getpass import getpass
 import platform
 
-async def userList():
-    """输出用户列表"""
+async def userList() -> bool:
+    """
+    输出用户列表
+    
+    返回值(bool): 是否退出
+    """
     await clear()
     print("用户列表\n====================\n")
 
     userNum=len(config.users)
 
+    print("0.退出")
     for i in range(userNum):
         print(f"{i+1}. {config.users[i].username} ({config.users[i].userId})")
     print(f"\n{userNum+1}. 登录新用户\n")
 
-    choice=selectNum(1,userNum+1)
+    choice=selectNum(0,userNum+1)
     if choice==userNum+1:
         await loginNew()
         config.correntUser=userNum
+    elif choice==0:
+        return True
     else:
         await login(config.users[i-1])
         config.correntUser=i-1
-    await ui.features.mainMenu()
+    await features.mainMenu()
+
+    return False
+
 
 async def loginNew():
     """登录新用户"""

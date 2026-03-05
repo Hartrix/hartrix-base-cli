@@ -22,6 +22,7 @@ class User:
        self.accessToken=accessToken
 
 users:List[User]=[]
+userLatestLogin=-1
 correntUser=-1
 
 async def setupUser():
@@ -29,14 +30,19 @@ async def setupUser():
     if not os.path.exists(pathJoin(configPath,"users.json")): 
         logger.warning("(users.json) 无用户登录，正在创建...")
         async with aiofiles.open(pathJoin(configPath,"users.json"),"w",encoding="utf-8") as f:
-            await f.write(json.dumps([],indent=2,ensure_ascii=False))
+            await f.write(json.dumps({
+                "latestLogin":-1,
+                "users":[]
+            },indent=2,ensure_ascii=False))
             await f.close()
     
     logger.info("(users.json) 读取用户信息...")
     async with aiofiles.open(pathJoin(configPath,"users.json"),"r",encoding="utf-8") as f:
         usersJson=json.loads(await f.read())
-        for user in usersJson:
+        for user in usersJson["users"]:
             users.append(User(**user))
+        
+        userLatestLogin=usersJson["latestLogin"]
         await f.close()
 
 async def writeUser():
